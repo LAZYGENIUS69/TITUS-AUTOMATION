@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 247 245 241;
+    --color-surface: 255 255 255;
+    --color-surface-alt: 240 237 230;
+    --color-border: 216 210 198;
+    --color-text-primary: 43 42 39;
+    --color-text-muted: 90 88 82;
+    --color-accent: 192 92 54;
+    --color-accent-soft: 241 221 210;
+    --color-warning: 147 109 30;
+    --color-danger: 156 63 53;
+    color-scheme: light;
+  }
+
+  .dark {
+    --color-bg: 31 30 29;
+    --color-surface: 42 41 40;
+    --color-surface-alt: 38 38 37;
+    --color-border: 61 60 58;
+    --color-text-primary: 232 230 225;
+    --color-text-muted: 170 167 159;
+    --color-accent: 192 92 54;
+    --color-accent-soft: 74 46 36;
+    --color-warning: 215 166 75;
+    --color-danger: 224 122 109;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body, #root {
+    height: 100%;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-text-primary));
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--color-bg));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-border));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #C05C36;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgb(var(--color-accent-soft));
+    color: rgb(var(--color-text-primary));
+  }
+
+  /* Input/select/textarea base reset */
+  input, select, textarea {
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  input[type="color"] {
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    height: 28px;
+    width: 36px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  /* Small secondary text remains readable at a glance in both themes. */
+  .text-text-muted {
+    font-weight: 500;
+  }
+
+  .font-mono.text-xs,
+  .font-mono[class*="text-["] {
+    font-weight: 500;
+  }
+}
