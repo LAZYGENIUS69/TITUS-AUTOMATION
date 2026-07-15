@@ -3,7 +3,8 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "app.db")
+DB_PATH = os.getenv("TITUS_DB_PATH", os.path.join(os.path.dirname(__file__), "app.db"))
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 # Ensure SQLite enables WAL mode and foreign key constraints on connection

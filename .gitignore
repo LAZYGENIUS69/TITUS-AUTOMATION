@@ -11,6 +11,7 @@ backend/__pycache__/
 backend/app.db
 backend/app.db-shm
 backend/app.db-wal
+backend/data/
 
 # Uploaded / Generated files
 backend/uploads/
