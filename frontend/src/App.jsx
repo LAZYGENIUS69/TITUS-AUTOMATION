@@ -51,7 +51,7 @@ function App() {
   const [runStatus, setRunStatus] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("titus-theme") === "dark");
 
-  const API_BASE = "http://localhost:8000";
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
 
   const fetchInitialData = async () => {
     try {

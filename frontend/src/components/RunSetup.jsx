@@ -90,7 +90,7 @@ export default function RunSetup({ events, onNavigate, onCreateRun }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const API_BASE = "http://localhost:8000";
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
 
   const selectedEvent = events.find((e) => e.id === parseInt(selectedEventId));
 

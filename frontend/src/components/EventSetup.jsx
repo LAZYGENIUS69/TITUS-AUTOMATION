@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const API_BASE = "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
 const MAX_HISTORY = 20;
 
 const RECOMMENDED_FONTS = new Set([
