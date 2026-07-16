@@ -5,7 +5,8 @@ import RunSetup from "./components/RunSetup";
 import RunDetail from "./components/RunDetail";
 import WelcomePage from "./components/WelcomePage";
 import { API_BASE, clearAuthSession, getAuthToken } from "./auth";
-import { Award, LayoutDashboard, CalendarDays, PlayCircle, Sun, Moon, LogOut } from "lucide-react";
+import { LayoutDashboard, CalendarDays, PlayCircle, Sun, Moon, LogOut } from "lucide-react";
+import titusLogo from "./assets/titus-logo.png";
 import "./App.css";
 
 const NAV_ITEMS = [
@@ -208,7 +209,7 @@ function App() {
           onClick={() => handleNavigate("dashboard")}
           className="flex items-center gap-2.5 group"
         >
-          <Award size={18} className="text-accent" />
+          <img src={titusLogo} alt="TITUS logo" className="w-8 h-8 rounded-full object-cover" />
           <span className="font-heading font-semibold text-lg text-text-primary tracking-tight group-hover:text-accent transition-colors duration-150">
             TITUS
           </span>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Award, FileText, ShieldCheck, ArrowRight, Moon, Sun, LoaderCircle } from "lucide-react";
+import { FileText, ShieldCheck, ArrowRight, Moon, Sun, LoaderCircle } from "lucide-react";
 import { API_BASE, setAuthSession } from "../auth";
+import titusLogo from "../assets/titus-logo.png";
 
 export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }) {
   const [mode, setMode] = useState("login");
@@ -46,8 +47,8 @@ export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }
         </div>
 
         <div className="flex flex-col items-center text-center mt-4 mb-10">
-          <div className="w-16 h-16 rounded-full bg-accent-soft border border-accent/30 flex items-center justify-center shadow-sm">
-            <Award size={34} className="text-accent" />
+          <div className="w-20 h-20 rounded-full bg-surface border border-border flex items-center justify-center shadow-sm overflow-hidden">
+            <img src={titusLogo} alt="TITUS logo" className="w-full h-full object-cover" />
           </div>
           <p className="font-mono text-sm text-accent font-semibold tracking-wide mt-5">TITUS CERTIFICATE AUTOMATION</p>
           <h1 className="font-heading text-4xl md:text-5xl font-semibold tracking-tight mt-4">Welcome back</h1>
