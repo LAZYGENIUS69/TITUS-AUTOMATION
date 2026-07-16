@@ -6,9 +6,12 @@ import {
 
 function MetricCard({ label, value, color = "text-text-primary" }) {
   return (
-    <div className="bg-surface border border-border rounded-lg p-5 flex flex-col gap-2">
-      <span className="text-xs uppercase tracking-widest text-text-muted font-sans">{label}</span>
-      <span className={`font-mono text-3xl font-semibold ${color}`}>{value}</span>
+    <div className="relative overflow-hidden bg-surface border border-border border-t-2 border-t-accent/60 rounded-lg p-5 flex flex-col gap-3 min-h-[122px]">
+      <div className="flex items-center justify-between">
+        <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted font-sans font-semibold">{label}</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_rgb(var(--color-accent)/0.65)]" />
+      </div>
+      <span className={`font-mono text-3xl font-semibold tracking-tight ${color}`}>{value}</span>
     </div>
   );
 }
@@ -32,8 +35,8 @@ function StatusBadge({ status }) {
 
 function SectionHeader({ children }) {
   return (
-    <div className="px-4 py-2.5 border-b border-border bg-surface-alt">
-      <span className="text-xs uppercase tracking-widest text-text-muted font-sans font-semibold">
+    <div className="px-4 py-3 border-b border-border bg-surface-alt/70">
+      <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted font-sans font-semibold">
         {children}
       </span>
     </div>
@@ -58,8 +61,8 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
           <h1 className="font-heading text-2xl text-text-primary tracking-tight">
             Dashboard
           </h1>
-          <p className="text-sm text-text-muted mt-0.5">
-            Overview of events, generated certificates, and email runs.
+          <p className="text-sm text-text-muted mt-1">
+            Overview of templates, certificate output, and delivery activity.
           </p>
         </div>
         <div className="flex gap-2">
@@ -89,13 +92,16 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
       </div>
 
       {/* Two-column lists */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 items-start">
         {/* Recent Events */}
-        <div className="bg-surface border border-border rounded-lg overflow-hidden">
+        <div className="bg-surface border border-border rounded-lg overflow-hidden self-start w-full">
           <SectionHeader>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center justify-between gap-2">
+              <span className="flex items-center gap-2">
               <Award size={12} />
               Recent Events
+              </span>
+              <span className="font-mono text-[10px] tracking-normal text-text-muted">{recentEvents.length} shown</span>
             </span>
           </SectionHeader>
 
@@ -156,11 +162,14 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
         </div>
 
         {/* Recent Runs */}
-        <div className="bg-surface border border-border rounded-lg overflow-hidden">
+        <div className="bg-surface border border-border rounded-lg overflow-hidden self-start w-full">
           <SectionHeader>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center justify-between gap-2">
+              <span className="flex items-center gap-2">
               <Activity size={12} />
               Recent Runs
+              </span>
+              <span className="font-mono text-[10px] tracking-normal text-text-muted">{recentRuns.length} shown</span>
             </span>
           </SectionHeader>
 
