@@ -4,30 +4,30 @@
 
 @layer base {
   :root {
-    --color-bg: 247 245 241;
+    --color-bg: 241 244 247;
     --color-surface: 255 255 255;
-    --color-surface-alt: 240 237 230;
-    --color-border: 216 210 198;
-    --color-text-primary: 43 42 39;
-    --color-text-muted: 90 88 82;
-    --color-accent: 192 92 54;
-    --color-accent-soft: 241 221 210;
-    --color-warning: 147 109 30;
-    --color-danger: 156 63 53;
+    --color-surface-alt: 232 237 242;
+    --color-border: 204 214 223;
+    --color-text-primary: 20 35 48;
+    --color-text-muted: 78 96 112;
+    --color-accent: 13 116 116;
+    --color-accent-soft: 215 240 236;
+    --color-warning: 165 107 18;
+    --color-danger: 161 59 74;
     color-scheme: light;
   }
 
   .dark {
-    --color-bg: 31 30 29;
-    --color-surface: 42 41 40;
-    --color-surface-alt: 38 38 37;
-    --color-border: 61 60 58;
-    --color-text-primary: 232 230 225;
-    --color-text-muted: 170 167 159;
-    --color-accent: 192 92 54;
-    --color-accent-soft: 74 46 36;
-    --color-warning: 215 166 75;
-    --color-danger: 224 122 109;
+    --color-bg: 13 24 33;
+    --color-surface: 21 35 46;
+    --color-surface-alt: 25 43 55;
+    --color-border: 52 70 83;
+    --color-text-primary: 232 240 244;
+    --color-text-muted: 169 187 197;
+    --color-accent: 82 194 178;
+    --color-accent-soft: 28 72 72;
+    --color-warning: 235 177 76;
+    --color-danger: 235 126 139;
     color-scheme: dark;
   }
 
@@ -44,7 +44,8 @@
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    background-image: linear-gradient(135deg, rgb(var(--color-bg)) 0%, rgb(var(--color-surface-alt) / 0.32) 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -62,7 +63,7 @@
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #C05C36;
+    background: rgb(var(--color-accent));
   }
 
   /* Selection */

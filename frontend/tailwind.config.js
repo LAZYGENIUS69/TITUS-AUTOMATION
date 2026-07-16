@@ -20,8 +20,8 @@ export default {
         danger: 'rgb(var(--color-danger) / <alpha-value>)',
       },
       fontFamily: {
-        heading: ['"Source Serif 4"', 'Georgia', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        heading: ['"Fraunces"', 'Georgia', 'serif'],
+        sans: ['"DM Sans"', 'Inter', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
       },
       borderRadius: {

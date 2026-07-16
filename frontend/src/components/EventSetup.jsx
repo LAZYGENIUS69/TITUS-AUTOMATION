@@ -410,7 +410,7 @@ const FieldSettingsPanel = memo(function FieldSettingsPanel({
               value={field.font_size}
               onChange={(e) => onChange(idx, "font_size", parseInt(e.target.value))}
               className="flex-1 h-1 accent-orange-600 cursor-pointer"
-              style={{ accentColor: "#C05C36" }}
+              style={{ accentColor: "rgb(var(--color-accent))" }}
             />
           </div>
         </div>
