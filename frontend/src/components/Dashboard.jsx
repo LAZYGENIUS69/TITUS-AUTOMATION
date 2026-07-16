@@ -1,33 +1,41 @@
 import React from "react";
 import {
   Plus, Play, Trash2, Calendar, ChevronRight,
-  Award, Activity, Mail,
+  Award, Activity, Mail, CalendarDays, FileCheck2, Send,
 } from "lucide-react";
 
-function MetricCard({ label, value, color = "text-text-primary" }) {
+function MetricCard({ label, value, color = "text-text-primary", icon: Icon, detail }) {
   return (
-    <div className="relative overflow-hidden bg-surface border border-border border-t-2 border-t-accent/60 rounded-lg p-5 flex flex-col gap-3 min-h-[122px]">
+    <div className="group relative overflow-hidden bg-surface border border-border rounded-lg px-4 py-3.5 flex flex-col gap-2 min-h-[104px] shadow-[0_8px_24px_rgb(0_0_0/0.08)] transition-colors duration-150 hover:border-accent/40">
       <div className="flex items-center justify-between">
-        <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted font-sans font-semibold">{label}</span>
-        <span className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_10px_rgb(var(--color-accent)/0.65)]" />
+        <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-text-muted font-sans font-semibold">
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent/10 text-accent">
+            <Icon size={15} strokeWidth={1.8} />
+          </span>
+          {label}
+        </span>
+        <span className="h-1.5 w-1.5 rounded-full bg-accent opacity-70 transition-opacity group-hover:opacity-100" />
       </div>
-      <span className={`font-mono text-3xl font-semibold tracking-tight ${color}`}>{value}</span>
+      <div className="flex items-end justify-between gap-3 pl-9">
+        <span className={`font-mono text-[2rem] leading-none font-semibold tracking-tight ${color}`}>{value}</span>
+        <span className="text-[11px] text-text-muted font-medium">{detail}</span>
+      </div>
     </div>
   );
 }
 
 function StatusBadge({ status }) {
   const map = {
-    pending: "border-warning text-warning",
-    generating: "border-accent text-accent",
-    generated: "border-accent text-accent",
-    sending: "border-warning text-warning",
-    completed: "border-accent text-accent",
-    failed: "border-danger text-danger",
+    pending: "bg-warning/10 border-warning/30 text-warning",
+    generating: "bg-accent/10 border-accent/30 text-accent",
+    generated: "bg-accent/10 border-accent/30 text-accent",
+    sending: "bg-warning/10 border-warning/30 text-warning",
+    completed: "bg-accent/10 border-accent/30 text-accent",
+    failed: "bg-danger/10 border-danger/30 text-danger",
   };
   const cls = map[status] || "border-border text-text-muted";
   return (
-    <span className={`font-mono text-[11px] border rounded px-1.5 py-0.5 ${cls}`}>
+    <span className={`font-mono text-[11px] font-medium border rounded-full px-2 py-0.5 ${cls}`}>
       {status}
     </span>
   );
@@ -35,8 +43,8 @@ function StatusBadge({ status }) {
 
 function SectionHeader({ children }) {
   return (
-    <div className="px-4 py-3 border-b border-border bg-surface-alt/70">
-      <span className="text-[11px] uppercase tracking-[0.18em] text-text-muted font-sans font-semibold">
+    <div className="px-4 py-2.5 border-b border-border bg-surface-alt/45">
+      <span className="text-[11px] uppercase tracking-[0.16em] text-text-muted font-sans font-semibold">
         {children}
       </span>
     </div>
@@ -54,21 +62,25 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
   const recentRuns = [...runs].reverse().slice(0, 6);
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl">
+    <div className="flex flex-col gap-5 max-w-6xl">
       {/* Page heading + actions */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-end justify-between gap-6">
         <div>
-          <h1 className="font-heading text-2xl text-text-primary tracking-tight">
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-accent font-semibold mb-1">
+            <Activity size={13} />
+            Workspace overview
+          </div>
+          <h1 className="font-heading text-3xl text-text-primary tracking-tight leading-none">
             Dashboard
           </h1>
-          <p className="text-sm text-text-muted mt-1">
+          <p className="text-sm text-text-muted mt-2 font-medium">
             Overview of templates, certificate output, and delivery activity.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <button
             onClick={() => onNavigate("event-setup")}
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-text-muted bg-surface border border-border rounded hover:text-text-primary hover:border-text-muted transition-colors duration-150"
+            className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-text-primary bg-surface-alt border border-border rounded-md shadow-[0_4px_12px_rgb(0_0_0/0.06)] hover:bg-surface hover:border-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 transition-colors duration-150"
           >
             <Plus size={14} />
             New Event
@@ -76,7 +88,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
           <button
             onClick={() => onNavigate("run-setup")}
             disabled={events.length === 0}
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-bg bg-accent rounded hover:opacity-90 transition-opacity duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-bg bg-accent rounded-md shadow-[0_6px_16px_rgb(var(--color-accent)/0.22)] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 transition duration-150 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <Play size={14} />
             Start Run
@@ -85,16 +97,16 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
       </div>
 
       {/* Metric row */}
-      <div className="grid grid-cols-3 gap-4">
-        <MetricCard label="Total Events" value={totalEvents} />
-        <MetricCard label="Certs Generated" value={totalGenerated} color="text-accent" />
-        <MetricCard label="Certs Sent" value={totalSent} color="text-accent" />
+      <div className="grid grid-cols-3 gap-3.5">
+        <MetricCard label="Total Events" value={totalEvents} icon={CalendarDays} detail="templates" />
+        <MetricCard label="Certs Generated" value={totalGenerated} color="text-accent" icon={FileCheck2} detail="this workspace" />
+        <MetricCard label="Certs Sent" value={totalSent} color="text-accent" icon={Send} detail="delivered" />
       </div>
 
       {/* Two-column lists */}
-      <div className="grid grid-cols-2 gap-4 items-start">
+      <div className="grid grid-cols-2 gap-3.5 items-start">
         {/* Recent Events */}
-        <div className="bg-surface border border-border rounded-lg overflow-hidden self-start w-full">
+        <div className="bg-surface border border-border rounded-lg overflow-hidden self-start w-full shadow-[0_8px_24px_rgb(0_0_0/0.06)]">
           <SectionHeader>
             <span className="flex items-center justify-between gap-2">
               <span className="flex items-center gap-2">
@@ -120,11 +132,11 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
               {recentEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-center justify-between px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-alt transition-colors duration-100"
+                  className="group flex items-center justify-between px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-alt/70 transition-colors duration-100"
                 >
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-text-primary truncate">
+                      <span className="text-sm font-semibold text-text-primary truncate">
                         {event.name}
                       </span>
                       {event.template_missing && (
@@ -133,7 +145,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-text-muted mt-0.5 flex items-center gap-1.5">
+                    <span className="text-xs text-text-muted mt-1 flex items-center gap-1.5 font-medium">
                       <Calendar size={11} />
                       {new Date(event.created_at).toLocaleDateString()}
                       <span className="text-border">·</span>
@@ -143,7 +155,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
                   <div className="flex items-center gap-1 flex-shrink-0 ml-3">
                     <button
                       onClick={() => onNavigate("event-setup", { eventId: event.id })}
-                      className="px-2 py-1 text-xs text-text-muted border border-border rounded hover:text-text-primary hover:border-text-muted transition-colors duration-150"
+                      className="px-2 py-1 text-xs font-medium text-text-muted border border-border rounded-md hover:text-text-primary hover:border-text-muted transition-colors duration-150"
                     >
                       Edit
                     </button>
@@ -162,7 +174,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
         </div>
 
         {/* Recent Runs */}
-        <div className="bg-surface border border-border rounded-lg overflow-hidden self-start w-full">
+        <div className="bg-surface border border-accent/20 rounded-lg overflow-hidden self-start w-full shadow-[0_10px_28px_rgb(0_0_0/0.1)]">
           <SectionHeader>
             <span className="flex items-center justify-between gap-2">
               <span className="flex items-center gap-2">
@@ -183,16 +195,16 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
                 <div
                   key={run.id}
                   onClick={() => onNavigate("run-detail", { runId: run.id })}
-                  className="flex items-center justify-between px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-alt transition-colors duration-100 cursor-pointer"
+                  className="group flex items-center justify-between px-4 py-3 border-b border-border last:border-b-0 hover:bg-surface-alt/70 transition-colors duration-100 cursor-pointer"
                 >
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm text-text-primary">
+                      <span className="font-mono text-sm font-medium text-text-primary">
                         Run #{run.id}
                       </span>
                       <StatusBadge status={run.status} />
                     </div>
-                    <span className="text-xs text-text-muted mt-0.5 flex items-center gap-1.5">
+                    <span className="text-xs text-text-muted mt-1 flex items-center gap-1.5 font-medium">
                       <Mail size={11} />
                       {run.event_name}
                       <span className="text-border">·</span>
@@ -200,7 +212,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
                       {new Date(run.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  <ChevronRight size={14} className="text-text-muted flex-shrink-0 ml-2" />
+                  <ChevronRight size={14} className="text-text-muted flex-shrink-0 ml-2 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-accent" />
                 </div>
               ))}
             </div>
