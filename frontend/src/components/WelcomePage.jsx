@@ -72,8 +72,7 @@ export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }
             <img src={titusLogo} alt="TITUS logo" className="w-full h-full object-cover" />
           </div>
           <p className="font-mono text-sm text-accent font-semibold tracking-wide mt-5">TITUS CERTIFICATE AUTOMATION</p>
-          <h1 className="font-heading text-4xl md:text-5xl font-semibold tracking-tight mt-4">Welcome to TITUS</h1>
-          <p className="text-base text-text-muted font-medium mt-3">Create and deliver certificates with confidence.</p>
+          <h1 className="font-heading text-4xl md:text-5xl font-semibold tracking-tight mt-4">Welcome back</h1>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5 w-full max-w-4xl">
