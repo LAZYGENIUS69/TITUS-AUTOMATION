@@ -209,7 +209,7 @@ function App() {
           onClick={() => handleNavigate("dashboard")}
           className="flex items-center gap-2.5 group"
         >
-          <img src={titusLogo} alt="TITUS logo" className="w-8 h-8 rounded-full object-cover" />
+          <img src={titusLogo} alt="TITUS logo" className="w-9 h-9 rounded-full object-cover" />
           <span className="font-heading font-semibold text-lg text-text-primary tracking-tight group-hover:text-accent transition-colors duration-150">
             TITUS
           </span>

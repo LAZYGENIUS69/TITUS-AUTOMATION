@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FileText, ShieldCheck, ArrowRight, Moon, Sun, LoaderCircle } from "lucide-react";
+import { FileText, LogIn, ArrowRight, Moon, Sun, LoaderCircle } from "lucide-react";
 import { API_BASE, setAuthSession } from "../auth";
 import titusLogo from "../assets/titus-logo.png";
 
@@ -47,7 +47,7 @@ export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }
         </div>
 
         <div className="flex flex-col items-center text-center mt-4 mb-10">
-          <div className="w-20 h-20 rounded-full bg-surface border border-border flex items-center justify-center shadow-sm overflow-hidden">
+          <div className="w-24 h-24 rounded-full bg-surface border border-border flex items-center justify-center shadow-sm overflow-hidden">
             <img src={titusLogo} alt="TITUS logo" className="w-full h-full object-cover" />
           </div>
           <p className="font-mono text-sm text-accent font-semibold tracking-wide mt-5">TITUS CERTIFICATE AUTOMATION</p>
@@ -71,15 +71,15 @@ export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }
 
           <button
             type="button"
-            onClick={() => setPortal("admin")}
+            onClick={() => { setPortal("workspace"); setMode("login"); setError(""); }}
             className={`text-left bg-surface border rounded-xl p-7 transition-colors ${portal === "admin" ? "border-accent shadow-sm" : "border-border hover:border-accent/60"}`}
           >
             <div className="w-12 h-12 rounded-full bg-surface-alt flex items-center justify-center mb-6">
-              <ShieldCheck size={24} className="text-accent" />
+              <LogIn size={24} className="text-accent" />
             </div>
-            <h2 className="font-heading text-2xl font-semibold">Administration</h2>
-            <p className="text-sm text-text-muted font-medium leading-relaxed mt-3">Manage your certificate operations and email delivery workspace.</p>
-            <span className="inline-flex items-center gap-2 text-sm text-accent font-semibold mt-6">Continue <ArrowRight size={15} /></span>
+            <h2 className="font-heading text-2xl font-semibold">Sign in</h2>
+            <p className="text-sm text-text-muted font-medium leading-relaxed mt-3">Already have a TITUS account? Continue to your certificate workspace.</p>
+            <span className="inline-flex items-center gap-2 text-sm text-accent font-semibold mt-6">Sign in securely <ArrowRight size={15} /></span>
           </button>
         </div>
 
