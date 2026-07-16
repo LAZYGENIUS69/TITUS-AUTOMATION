@@ -4,6 +4,7 @@ import React, {
 import {
   ArrowLeft, Save, Upload, Eye, Plus, Trash2, CheckCircle2, RefreshCw, Undo2, AlertCircle, ChevronDown, Type, X, ChevronUp,
 } from "lucide-react";
+import { authenticatedAssetUrl } from "../auth";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
@@ -49,7 +50,7 @@ function FontLoader({ fonts }) {
       .filter((f) => f !== "arial.ttf") // arial is a system font
       .map((filename) => {
         const family = fontFilenameToFamily(filename);
-        const url = `${API_BASE}/api/fonts/file/${encodeURIComponent(filename)}`;
+        const url = authenticatedAssetUrl(`${API_BASE}/api/fonts/file/${encodeURIComponent(filename)}`);
         return `@font-face { font-family: '${family}'; src: url('${url}') format('truetype'); font-display: swap; }`;
       })
       .join("\n");
@@ -924,7 +925,7 @@ export default function EventSetup({ eventId, onNavigate, onRefreshEvents }) {
       });
       if (!res.ok) throw new Error("Failed to generate preview");
       const data = await res.json();
-      setPreviewUrl(`${API_BASE}/${data.preview_url}`);
+      setPreviewUrl(authenticatedAssetUrl(`${API_BASE}/${data.preview_url}`));
     } catch (err) { alert(err.message); }
     finally { setIsGeneratingPreview(false); }
   };
@@ -1071,7 +1072,7 @@ export default function EventSetup({ eventId, onNavigate, onRefreshEvents }) {
               >
                 <img
                   ref={imageRef}
-                  src={`${API_BASE}/api/events/${activeEvent.id}/template-image?v=${encodeURIComponent(activeEvent.template_path)}`}
+                  src={authenticatedAssetUrl(`${API_BASE}/api/events/${activeEvent.id}/template-image?v=${encodeURIComponent(activeEvent.template_path)}`)}
                   alt="Template Canvas"
                   className="w-full h-full block pointer-events-none"
                   onLoad={handleImageLoad}

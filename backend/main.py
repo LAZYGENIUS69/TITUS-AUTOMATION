@@ -4,8 +4,8 @@ import asyncio
 from pathlib import Path
 import pandas as pd
 from typing import List, Dict, Any
-from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException, BackgroundTasks
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Depends, UploadFile, File, Form, HTTPException, BackgroundTasks, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -22,6 +22,7 @@ import crud
 from database import engine, Base, get_db, SessionLocal
 from pdf_generator import overlay_text_and_generate_pdf
 from email_sender import send_email_with_retry, PROVIDER
+import auth
 
 # Create upload paths
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
@@ -76,6 +77,68 @@ def _run_migrations():
 _run_migrations()
 
 app = FastAPI(title="Certificate Automation API")
+
+
+@app.middleware("http")
+async def require_authentication(request: Request, call_next):
+    path = request.url.path
+    public_paths = {"/api/auth/login", "/api/auth/register", "/docs", "/openapi.json", "/redoc"}
+    if request.method == "OPTIONS" or path in public_paths:
+        return await call_next(request)
+
+    authorization = request.headers.get("Authorization", "")
+    token = authorization[7:].strip() if authorization.lower().startswith("bearer ") else request.query_params.get("token", "")
+    if not token:
+        return JSONResponse(status_code=401, content={"detail": "Authentication required"})
+
+    with SessionLocal() as auth_db:
+        user = auth.get_user_from_token(auth_db, token)
+    if not user:
+        return JSONResponse(status_code=401, content={"detail": "Invalid or expired authentication token"})
+
+    request.state.user = user
+    return await call_next(request)
+
+
+@app.post("/api/auth/register", response_model=schemas.AuthResponse)
+def register(credentials: schemas.AuthCredentials, db: Session = Depends(get_db)):
+    email = auth.normalize_email(credentials.email)
+    if len(credentials.password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+    if "@" not in email:
+        raise HTTPException(status_code=400, detail="Enter a valid email address")
+    if db.query(models.User).filter(models.User.email == email).first():
+        raise HTTPException(status_code=409, detail="An account with this email already exists")
+
+    role = "admin" if db.query(models.User).count() == 0 else "member"
+    user = models.User(email=email, password_hash=auth.hash_password(credentials.password), role=role)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return schemas.AuthResponse(
+        access_token=auth.create_access_token(user),
+        user=schemas.AuthUser(id=user.id, email=user.email, role=user.role),
+    )
+
+
+@app.post("/api/auth/login", response_model=schemas.AuthResponse)
+def login(credentials: schemas.AuthCredentials, db: Session = Depends(get_db)):
+    email = auth.normalize_email(credentials.email)
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user or not auth.verify_password(credentials.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    return schemas.AuthResponse(
+        access_token=auth.create_access_token(user),
+        user=schemas.AuthUser(id=user.id, email=user.email, role=user.role),
+    )
+
+
+@app.get("/api/auth/me", response_model=schemas.AuthUser)
+def current_user(request: Request):
+    user = getattr(request.state, "user", None)
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    return schemas.AuthUser(id=user.id, email=user.email, role=user.role)
 
 # Enable CORS for React frontend
 app.add_middleware(

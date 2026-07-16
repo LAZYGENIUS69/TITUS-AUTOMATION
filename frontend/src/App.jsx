@@ -3,7 +3,9 @@ import Dashboard from "./components/Dashboard";
 import EventSetup from "./components/EventSetup";
 import RunSetup from "./components/RunSetup";
 import RunDetail from "./components/RunDetail";
-import { Award, LayoutDashboard, CalendarDays, PlayCircle, Sun, Moon } from "lucide-react";
+import WelcomePage from "./components/WelcomePage";
+import { API_BASE, clearAuthSession, getAuthToken } from "./auth";
+import { Award, LayoutDashboard, CalendarDays, PlayCircle, Sun, Moon, LogOut } from "lucide-react";
 import "./App.css";
 
 const NAV_ITEMS = [
@@ -50,8 +52,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [runStatus, setRunStatus] = useState(null);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("titus-theme") === "dark");
-
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+  const [authUser, setAuthUser] = useState(null);
+  const [authChecking, setAuthChecking] = useState(true);
 
   const fetchInitialData = async () => {
     try {
@@ -80,8 +82,25 @@ function App() {
   };
 
   useEffect(() => {
-    fetchInitialData();
+    const token = getAuthToken();
+    if (!token) {
+      setAuthChecking(false);
+      return;
+    }
+    fetch(`${API_BASE}/api/auth/me`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Session expired");
+        return response.json();
+      })
+      .then(setAuthUser)
+      .catch(() => clearAuthSession())
+      .finally(() => setAuthChecking(false));
   }, []);
+
+  useEffect(() => {
+    if (authUser) fetchInitialData();
+    else setLoading(false);
+  }, [authUser]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -95,6 +114,14 @@ function App() {
   };
 
   const handleRefreshEvents = () => fetchInitialData();
+
+  const handleLogout = () => {
+    clearAuthSession();
+    setAuthUser(null);
+    setEvents([]);
+    setRuns([]);
+    setView("dashboard");
+  };
 
   const handleDeleteEvent = async (eventId) => {
     if (!window.confirm("Delete this event template? This will also delete all associated runs and generated PDFs.")) return;
@@ -170,6 +197,9 @@ function App() {
     }
   };
 
+  if (authChecking) return <div className="min-h-screen bg-bg flex items-center justify-center text-text-muted font-mono text-sm">Checking secure session...</div>;
+  if (!authUser) return <WelcomePage darkMode={darkMode} onToggleTheme={() => setDarkMode((current) => !current)} onAuthenticated={setAuthUser} />;
+
   return (
     <div className="flex flex-col h-screen bg-bg overflow-hidden">
       {/* ── Top Bar ─────────────────────────────────────────────── */}
@@ -192,6 +222,10 @@ function App() {
             title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+          <span className="hidden md:block text-xs text-text-muted font-medium max-w-[180px] truncate" title={authUser.email}>{authUser.email}</span>
+          <button type="button" onClick={handleLogout} className="p-1.5 text-text-muted hover:text-danger border border-border rounded transition-colors" title="Sign out" aria-label="Sign out">
+            <LogOut size={15} />
           </button>
           <StatusPill view={view} runStatus={runStatus} />
         </div>

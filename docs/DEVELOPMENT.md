@@ -46,6 +46,7 @@ BREVO_API_KEY=<set as a Railway secret>
 EMAIL_FROM=Your Organization <verified-sender@example.com>
 BREVO_FORCE_IPV4=true
 TITUS_DB_PATH=/app/backend/data/app.db
+AUTH_SECRET=<long-random-secret>
 ```
 
 Attach a Railway volume at `/app/backend/data` for the SQLite database and `/app/backend/uploads` for templates and generated PDFs. After deployment, use the Railway public URL as the frontend's `VITE_API_BASE` value in Vercel.

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   ArrowLeft, RefreshCw, FileText, Send, AlertCircle, ExternalLink,
 } from "lucide-react";
+import { authenticatedAssetUrl } from "../auth";
 
 const STATUS_FILTERS = ["All", "Pending", "Failed"];
 
@@ -385,7 +386,7 @@ export default function RunDetail({ runId, onNavigate, events, onStatusChange })
                       <td className="px-4 py-3 text-sm">
                         {row.pdf_path ? (
                           <a
-                            href={`${API_BASE}/${row.pdf_path}`}
+                            href={authenticatedAssetUrl(`${API_BASE}/${row.pdf_path}`)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-accent text-xs font-mono hover:underline"

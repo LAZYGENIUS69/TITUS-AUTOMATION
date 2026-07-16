@@ -2,6 +2,20 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
+class AuthCredentials(BaseModel):
+    email: str
+    password: str
+
+class AuthUser(BaseModel):
+    id: int
+    email: str
+    role: str
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: AuthUser
+
 # Event Field schemas
 class EventFieldBase(BaseModel):
     placeholder: str
