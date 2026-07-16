@@ -8,10 +8,10 @@ services:
     env_file:
       - backend/.env
     environment:
-      TITUS_DB_PATH: /app/backend/data/app.db
+      TITUS_DB_PATH: /app/data/app.db
     volumes:
-      - titus-data:/app/backend/uploads
-      - titus-db:/app/backend/data
+      - titus-data:/app/uploads
+      - titus-db:/app/data
     restart: unless-stopped
 
   frontend:
