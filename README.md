@@ -48,6 +48,33 @@ npm run dev
 
 Open <http://localhost:5173> after both services are running.
 
+## Railway deployment
+
+Deploy the repository as two Railway services. Do not deploy the repository
+root as one Railpack service.
+
+### Backend service
+
+- Create a service from this repository.
+- Set **Root Directory** to `/backend`.
+- Railway will detect `backend/Dockerfile` automatically.
+- Add the backend environment variables from `backend/.env.example`, including
+  `AUTH_SECRET`, `EMAIL_PROVIDER`, `BREVO_API_KEY`, and `EMAIL_FROM`.
+- Add a persistent volume mounted at `/app/data` for the SQLite database and
+  `/app/uploads` for uploaded templates, spreadsheets, and generated PDFs.
+
+### Frontend service
+
+- Create a second service from the same repository.
+- Set **Root Directory** to `/frontend`.
+- Railway will detect `frontend/Dockerfile` automatically.
+- Set `VITE_API_BASE` to the public URL of the backend service, for example
+  `https://your-backend.up.railway.app`.
+
+The frontend URL is the link to share. The Brevo key stays only in the backend
+service, and the backend service's outbound IP must be authorized in Brevo if
+IP restrictions are enabled.
+
 ## Email configuration
 
 The Brevo setup requires:
