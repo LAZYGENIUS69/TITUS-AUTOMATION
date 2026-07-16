@@ -10,8 +10,8 @@
     --color-border: 204 214 223;
     --color-text-primary: 20 35 48;
     --color-text-muted: 78 96 112;
-    --color-accent: 13 116 116;
-    --color-accent-soft: 215 240 236;
+    --color-accent: 168 98 20;
+    --color-accent-soft: 252 237 207;
     --color-warning: 165 107 18;
     --color-danger: 161 59 74;
     color-scheme: light;
@@ -24,8 +24,8 @@
     --color-border: 28 43 53;
     --color-text-primary: 236 245 247;
     --color-text-muted: 155 173 183;
-    --color-accent: 56 220 207;
-    --color-accent-soft: 7 50 51;
+    --color-accent: 242 169 59;
+    --color-accent-soft: 71 46 11;
     --color-warning: 235 177 76;
     --color-danger: 235 126 139;
     color-scheme: dark;
