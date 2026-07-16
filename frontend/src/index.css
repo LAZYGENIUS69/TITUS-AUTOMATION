@@ -18,14 +18,14 @@
   }
 
   .dark {
-    --color-bg: 13 24 33;
-    --color-surface: 21 35 46;
-    --color-surface-alt: 25 43 55;
-    --color-border: 52 70 83;
-    --color-text-primary: 232 240 244;
-    --color-text-muted: 169 187 197;
-    --color-accent: 82 194 178;
-    --color-accent-soft: 28 72 72;
+    --color-bg: 3 7 10;
+    --color-surface: 8 13 18;
+    --color-surface-alt: 12 21 28;
+    --color-border: 28 43 53;
+    --color-text-primary: 236 245 247;
+    --color-text-muted: 155 173 183;
+    --color-accent: 56 220 207;
+    --color-accent-soft: 7 50 51;
     --color-warning: 235 177 76;
     --color-danger: 235 126 139;
     color-scheme: dark;
@@ -48,6 +48,10 @@
     background-image: linear-gradient(135deg, rgb(var(--color-bg)) 0%, rgb(var(--color-surface-alt) / 0.32) 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .dark body {
+    background-image: none;
   }
 
   /* Scrollbar */
