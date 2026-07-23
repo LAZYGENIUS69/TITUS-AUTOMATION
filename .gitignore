@@ -23,3 +23,6 @@ backend/test_*.otf
 frontend/node_modules/
 frontend/dist/
 frontend/.eslintcache
+
+# Local codebase analysis output
+graphify-out/
