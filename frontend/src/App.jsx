@@ -52,7 +52,8 @@ function App() {
   const [runs, setRuns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [runStatus, setRunStatus] = useState(null);
-  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("titus-theme") === "dark");
+  // Dark is the product default; an explicit light-mode choice remains persisted.
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("titus-theme") !== "light");
   const [authUser, setAuthUser] = useState(null);
   const [authChecking, setAuthChecking] = useState(true);
 
