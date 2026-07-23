@@ -47,11 +47,18 @@
   background: white;
 }
 
-/* Progress bar fill transition */
+/* Progress bar fill transition. Transform avoids animating layout width. */
+.progress-track {
+  overflow: hidden;
+}
+
 .progress-fill {
   height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
   background: rgb(var(--color-accent));
-  transition: width 0.5s ease-out;
+  transition: transform 0.5s ease-out;
   border-radius: 2px;
 }
 

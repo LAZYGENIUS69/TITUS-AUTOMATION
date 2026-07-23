@@ -163,6 +163,7 @@ export default function Dashboard({ events, runs, onNavigate, onDeleteEvent }) {
                       onClick={() => onDeleteEvent(event.id)}
                       className="p-1 text-text-muted hover:text-danger transition-colors duration-150"
                       title="Delete"
+                      aria-label={`Delete ${event.name}`}
                     >
                       <Trash2 size={13} />
                     </button>

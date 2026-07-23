@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   ArrowLeft, RefreshCw, FileText, Send, AlertCircle, ExternalLink,
 } from "lucide-react";
@@ -38,8 +38,11 @@ function LogCell({ error }) {
   if (!error) return <span className="text-text-muted">—</span>;
   return (
     <div className="flex flex-col gap-1 min-w-[220px] max-w-[620px]">
-      <div
+      <button
+        type="button"
         onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+        aria-label={expanded ? "Collapse full error log" : "Expand full error log"}
         className={`text-danger cursor-pointer font-mono text-[11px] p-2 rounded border border-danger/20 bg-danger/5 hover:bg-danger/10 transition-colors duration-100 ${
           expanded ? "whitespace-pre-wrap break-words block" : "truncate block max-w-[360px]"
         }`}
@@ -47,8 +50,9 @@ function LogCell({ error }) {
         style={{ userSelect: "text" }}
       >
         {error}
-      </div>
+      </button>
       <button
+        type="button"
         onClick={() => setExpanded(!expanded)}
         className="text-[9px] font-bold text-accent hover:underline self-start font-mono"
       >
@@ -66,7 +70,7 @@ export default function RunDetail({ runId, onNavigate, events, onStatusChange })
 
   const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
 
-  const fetchStatus = async () => {
+  const fetchStatus = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE}/api/runs/${runId}/status`);
       if (!response.ok) throw new Error("Failed to fetch run status");
@@ -82,11 +86,11 @@ export default function RunDetail({ runId, onNavigate, events, onStatusChange })
       setErrorMessage(err.message);
       setIsPolling(false);
     }
-  };
+  }, [API_BASE, onStatusChange, runId]);
 
   useEffect(() => {
     fetchStatus();
-  }, [runId]);
+  }, [fetchStatus]);
 
   // Auto-start PDF generation when run is freshly created (pending + no PDFs yet)
   useEffect(() => {
@@ -107,7 +111,7 @@ export default function RunDetail({ runId, onNavigate, events, onStatusChange })
       id = setInterval(fetchStatus, 2000);
     }
     return () => { if (id) clearInterval(id); };
-  }, [isPolling]);
+  }, [fetchStatus, isPolling]);
 
   const handleGenerate = async () => {
     setErrorMessage("");
@@ -285,8 +289,8 @@ export default function RunDetail({ runId, onNavigate, events, onStatusChange })
               {Math.round(progressPct)}%
             </span>
           </div>
-          <div className="w-full h-1.5 bg-surface-alt rounded-full overflow-hidden border border-border">
-            <div className="progress-fill" style={{ width: `${progressPct}%` }} />
+          <div className="progress-track w-full h-1.5 bg-surface-alt rounded-full border border-border" role="progressbar" aria-label="Run progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(progressPct)}>
+            <div className="progress-fill" style={{ "--progress": progressPct / 100 }} />
           </div>
         </div>
       )}

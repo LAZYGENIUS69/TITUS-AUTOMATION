@@ -25,7 +25,9 @@ function AuthCard({ mode, onAuthenticated }) {
       setAuthSession(data);
       onAuthenticated(data.user);
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof TypeError
+        ? "Unable to reach the workspace service. Check your connection and try again."
+        : err.message);
     } finally {
       setSubmitting(false);
     }
@@ -40,15 +42,15 @@ function AuthCard({ mode, onAuthenticated }) {
 
       <form onSubmit={submit} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-xs text-text-muted font-semibold uppercase tracking-wider">Email</span>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required autoComplete="email" className="bg-bg border border-border rounded px-3 py-3 text-sm text-text-primary font-medium focus:outline-none focus:border-accent" placeholder="you@example.com" />
+          <span id={`${mode}-email-label`} className="text-xs text-text-muted font-semibold uppercase tracking-wider">Email</span>
+          <input id={`${mode}-email`} value={email} onChange={(e) => setEmail(e.target.value)} type="email" required autoComplete="email" aria-invalid={Boolean(error)} className="bg-bg border border-border rounded px-3 py-3 text-sm text-text-primary font-medium focus:outline-none focus:border-accent" placeholder="you@example.com" />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-xs text-text-muted font-semibold uppercase tracking-wider">Password</span>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required minLength={8} autoComplete={isLogin ? "current-password" : "new-password"} className="bg-bg border border-border rounded px-3 py-3 text-sm text-text-primary font-medium focus:outline-none focus:border-accent" placeholder="At least 8 characters" />
+          <span id={`${mode}-password-label`} className="text-xs text-text-muted font-semibold uppercase tracking-wider">Password</span>
+          <input id={`${mode}-password`} value={password} onChange={(e) => setPassword(e.target.value)} type="password" required minLength={8} autoComplete={isLogin ? "current-password" : "new-password"} aria-invalid={Boolean(error)} className="bg-bg border border-border rounded px-3 py-3 text-sm text-text-primary font-medium focus:outline-none focus:border-accent" placeholder="At least 8 characters" />
         </label>
-        {error && <p className="text-sm text-danger font-medium bg-danger/10 border border-danger/30 rounded p-2.5">{error}</p>}
-        <button disabled={submitting} className="flex items-center justify-center gap-2 bg-accent text-bg rounded px-4 py-3 text-sm font-semibold hover:opacity-90 disabled:opacity-50 mt-1">
+        {error && <p role="alert" aria-live="assertive" className="text-sm text-danger font-medium bg-danger/10 border border-danger/30 rounded p-2.5">{error}</p>}
+        <button type="submit" disabled={submitting} aria-busy={submitting} className="flex items-center justify-center gap-2 bg-accent text-bg rounded px-4 py-3 text-sm font-semibold hover:opacity-90 disabled:opacity-50 mt-1">
           {submitting && <LoaderCircle size={15} className="animate-spin" />}
           {isLogin ? "Sign in" : "Create account"}
         </button>
@@ -62,7 +64,7 @@ export default function WelcomePage({ darkMode, onToggleTheme, onAuthenticated }
     <div className="min-h-screen bg-bg text-text-primary px-5 py-10 overflow-auto">
       <div className="max-w-5xl mx-auto flex flex-col items-center">
         <div className="w-full flex justify-end">
-          <button type="button" onClick={onToggleTheme} className="p-2 text-text-muted hover:text-text-primary border border-border rounded transition-colors" aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
+          <button type="button" onClick={onToggleTheme} className="min-h-10 min-w-10 p-2 text-text-muted hover:text-text-primary border border-border rounded transition-colors" aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}>
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
           </button>
         </div>

@@ -37,6 +37,16 @@
     padding: 0;
   }
 
+  /* Keep keyboard users oriented across every screen and theme. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 2px;
+  }
+
+  :target {
+    scroll-margin-top: 1rem;
+  }
+
   html, body, #root {
     height: 100%;
     background-color: rgb(var(--color-bg));

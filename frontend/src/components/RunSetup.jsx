@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import {
-  ArrowLeft, ArrowRight, Play, Upload, FileSpreadsheet,
+  ArrowLeft, ArrowRight, Play, FileSpreadsheet,
   AlertCircle, HelpCircle, Check,
 } from "lucide-react";
 
@@ -19,7 +19,7 @@ function Stepper({ current }) {
         const active = idx === current;
         return (
           <React.Fragment key={idx}>
-            <div className="flex flex-col items-center gap-1.5">
+            <div className="flex flex-col items-center gap-1.5" aria-current={active ? "step" : undefined}>
               <div
                 className={[
                   "w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-semibold border transition-colors duration-200",
@@ -155,7 +155,7 @@ export default function RunSetup({ events, onNavigate, onCreateRun }) {
 
       {/* Error */}
       {errorMessage && (
-        <div className="flex items-start gap-3 bg-surface border border-danger rounded-lg p-3 mb-4 text-danger">
+        <div role="alert" aria-live="assertive" className="flex items-start gap-3 bg-surface border border-danger rounded-lg p-3 mb-4 text-danger">
           <AlertCircle size={15} className="mt-0.5 flex-shrink-0" />
           <p className="text-sm">{errorMessage}</p>
         </div>
@@ -170,8 +170,9 @@ export default function RunSetup({ events, onNavigate, onCreateRun }) {
               Select Certificate Design Template
             </h2>
             <div>
-              <label className="block text-xs text-text-muted mb-1.5 font-medium">Event Template</label>
+              <label htmlFor="run-event-template" className="block text-xs text-text-muted mb-1.5 font-medium">Event Template</label>
               <select
+                id="run-event-template"
                 className="w-full px-3 py-2 bg-bg border border-border rounded text-sm text-text-primary focus:outline-none focus:border-accent transition-colors duration-150"
                 value={selectedEventId}
                 onChange={(e) => setSelectedEventId(e.target.value)}
@@ -278,7 +279,7 @@ export default function RunSetup({ events, onNavigate, onCreateRun }) {
               Map Recipient Email Column
             </h2>
             <div>
-              <label className="flex items-center gap-1.5 text-xs text-text-muted mb-1.5 font-medium">
+              <label htmlFor="run-email-column" className="flex items-center gap-1.5 text-xs text-text-muted mb-1.5 font-medium">
                 Email Column Name
                 <span
                   title="The exact header name in your Excel sheet that contains email addresses"
@@ -288,6 +289,7 @@ export default function RunSetup({ events, onNavigate, onCreateRun }) {
                 </span>
               </label>
               <input
+                id="run-email-column"
                 type="text"
                 className="w-full px-3 py-2 bg-bg border border-border rounded text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors duration-150"
                 placeholder="e.g. Email, RecipientEmail, EmailAddress"

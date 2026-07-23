@@ -219,14 +219,14 @@ function App() {
           <button
             type="button"
             onClick={() => setDarkMode((current) => !current)}
-            className="p-1.5 text-text-muted hover:text-text-primary border border-border rounded transition-colors duration-150"
+            className="min-h-10 min-w-10 p-1.5 text-text-muted hover:text-text-primary border border-border rounded transition-colors duration-150"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <Sun size={15} /> : <Moon size={15} />}
           </button>
           <span className="hidden md:block text-xs text-text-muted font-medium max-w-[180px] truncate" title={authUser.email}>{authUser.email}</span>
-          <button type="button" onClick={handleLogout} className="p-1.5 text-text-muted hover:text-danger border border-border rounded transition-colors" title="Sign out" aria-label="Sign out">
+          <button type="button" onClick={handleLogout} className="min-h-10 min-w-10 p-1.5 text-text-muted hover:text-danger border border-border rounded transition-colors" title="Sign out" aria-label="Sign out">
             <LogOut size={15} />
           </button>
           <StatusPill view={view} runStatus={runStatus} />
@@ -245,6 +245,7 @@ function App() {
                   key={id}
                   onClick={() => !isDisabled && handleNavigate(id)}
                   disabled={isDisabled}
+                  aria-current={isActive ? "page" : undefined}
                   className={[
                     "flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors duration-150 text-left w-full",
                     isActive
