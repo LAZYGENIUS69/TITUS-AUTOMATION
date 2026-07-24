@@ -11,14 +11,26 @@ from dotenv import load_dotenv
 ENV_FILE = Path(__file__).with_name(".env")
 load_dotenv(dotenv_path=ENV_FILE, override=True)
 
-# Configuration
-PROVIDER = os.getenv("EMAIL_PROVIDER", "mock").lower()  # resend, brevo, mock
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
 BREVO_API_KEY = os.getenv("BREVO_API_KEY", "")
 EMAIL_FROM = os.getenv("EMAIL_FROM", "Certificates <onboarding@resend.dev>")
 EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "Your Certificate of Completion")
 EMAIL_BODY = os.getenv("EMAIL_BODY", "<p>Hello,<br><br>Thank you for participating! Please find your personalized certificate of completion attached to this email.<br><br>Best regards,<br>Event Team</p>")
 BREVO_FORCE_IPV4 = os.getenv("BREVO_FORCE_IPV4", "true").lower() in ("1", "true", "yes", "on")
+
+
+def get_active_provider():
+    """Prefer Resend whenever its key is configured; retain Brevo as fallback."""
+    configured = os.getenv("EMAIL_PROVIDER", "").strip().lower()
+    if os.getenv("RESEND_API_KEY", "").strip():
+        return "resend"
+    if configured == "brevo" and os.getenv("BREVO_API_KEY", "").strip():
+        return "brevo"
+    return configured or "mock"
+
+
+# Configuration: resend, brevo, or mock. Resend wins over stale EMAIL_PROVIDER values.
+PROVIDER = get_active_provider()
 
 # Fallback check
 if PROVIDER == "resend" and not RESEND_API_KEY:
@@ -46,7 +58,7 @@ async def send_email_with_retry(
     load_dotenv(dotenv_path=ENV_FILE, override=True)
     
     if not provider:
-        provider = os.getenv("EMAIL_PROVIDER", "mock").lower()
+        provider = get_active_provider()
         
     if not api_key:
         api_key = os.getenv("RESEND_API_KEY", "") if provider == "resend" else os.getenv("BREVO_API_KEY", "")
